@@ -2,19 +2,19 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const fetcher = async () => {
-  const res = await axios.get("http://localhost:8787/todos");
+  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos`);
   return res.data;
 };
 
 const postFetcher = async (newTodo: string) => {
-  const res = await axios.post("http://localhost:8787/todos", {
+  const res = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos`, {
     title: newTodo,
   });
   return res.data;
 };
 
 const deleteFetcher = async (id: number) => {
-  const res = await axios.delete(`http://localhost:8787/todos/${id}`);
+  const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos/${id}`);
   return res.data;
 };
 
