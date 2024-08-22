@@ -6,12 +6,15 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
+import { Delete } from "@mui/icons-material";
+import { MutationFunction, UseMutationResult } from "@tanstack/react-query";
 
 interface TodoItemProps {
   todos: TodoList;
+  deleteTodo: UseMutationResult<any, Error, number, unknown>;
 }
 
-export default function TodoItem({ todos }: TodoItemProps) {
+export default function TodoItem({ todos, deleteTodo }: TodoItemProps) {
   const [checked, setChecked] = React.useState([0]);
 
   const handleToggle = (value: number) => () => {
@@ -36,8 +39,12 @@ export default function TodoItem({ todos }: TodoItemProps) {
           <ListItem
             key={todo.id}
             secondaryAction={
-              <IconButton edge="end" aria-label="comments">
-                {/* <CommentIcon /> */}
+              <IconButton
+                edge="end"
+                aria-label="comments"
+                onClick={() => deleteTodo.mutate(todo.id)}
+              >
+                <Delete />
               </IconButton>
             }
             disablePadding

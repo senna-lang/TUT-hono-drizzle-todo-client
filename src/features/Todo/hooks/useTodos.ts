@@ -13,6 +13,11 @@ const postFetcher = async (newTodo: string) => {
   return res.data;
 };
 
+const deleteFetcher = async (id: number) => {
+  const res = await axios.delete(`http://localhost:8787/todos/${id}`);
+  return res.data;
+};
+
 export default function useTodos() {
   const queryClient = useQueryClient();
   const {
@@ -39,5 +44,17 @@ export default function useTodos() {
     },
   });
 
-  return { todoList, error, isLoading, createTodo };
+  const deleteTodo = useMutation({
+    mutationFn: async (id: number) => {
+      const data = await deleteFetcher(id);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["todos"],
+      });
+    },
+  });
+
+  return { todoList, error, isLoading, createTodo, deleteTodo };
 }

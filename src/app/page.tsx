@@ -5,7 +5,7 @@ import useTodos from "@/features/Todo/hooks/useTodos";
 import { Typography } from "@mui/material";
 
 export default function Home() {
-  const { todoList, error, isLoading, createTodo } = useTodos();
+  const { todoList, error, isLoading } = useTodos();
 
   if (isLoading) {
     return <h1>Loading...</h1>;
@@ -40,12 +40,10 @@ export default function Home() {
         <TodoListBox
           headingText="Just do it"
           todos={todoList!}
-          createTodo={createTodo.mutate}
         />
         <TodoListBox
           headingText="Done"
           todos={todoList!}
-          createTodo={createTodo.mutate}
         />
       </Box>
     </main>

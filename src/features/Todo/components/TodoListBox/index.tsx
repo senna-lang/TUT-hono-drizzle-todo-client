@@ -8,19 +8,18 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import { UseMutateFunction } from "@tanstack/react-query";
+import useTodos from "../../hooks/useTodos";
 
 interface TodoAreaPaperProps {
   headingText: string;
   todos: TodoList;
-  createTodo: UseMutateFunction<any, Error, string, unknown>;
 }
 
 const TodoListBox = ({
   headingText,
   todos,
-  createTodo,
 }: TodoAreaPaperProps) => {
+  const { createTodo ,deleteTodo } = useTodos();
   const [newTodo, setNewTodo] = React.useState<string>("");
   return (
     <Paper
@@ -46,7 +45,7 @@ const TodoListBox = ({
             flexGrow: 1,
           }}
         >
-          <TodoItem todos={todos} />
+          <TodoItem todos={todos} deleteTodo={deleteTodo}/>
         </Box>
         <Stack direction="row" spacing={2}>
           <TextField
@@ -63,7 +62,7 @@ const TodoListBox = ({
             variant="contained"
             endIcon={<SendIcon />}
             onClick={() => {
-              createTodo(newTodo);
+              createTodo.mutate(newTodo);
               setNewTodo("");
             }}
           >
