@@ -1,4 +1,3 @@
-import * as React from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -6,8 +5,12 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
-import { Delete } from "@mui/icons-material";
-import { MutationFunction, UseMutationResult } from "@tanstack/react-query";
+import { Delete, Edit } from "@mui/icons-material";
+import SendIcon from "@mui/icons-material/Send";
+import { UseMutationResult } from "@tanstack/react-query";
+import { useState } from "react";
+import Grid from "@mui/material/Grid";
+import { CustomTextField } from "../Input/CustomTextField/CustomTextField";
 
 interface TodoItemProps {
   todos: TodoList;
@@ -15,7 +18,8 @@ interface TodoItemProps {
 }
 
 export default function TodoItem({ todos, deleteTodo }: TodoItemProps) {
-  const [checked, setChecked] = React.useState([0]);
+  const [checked, setChecked] = useState([0]);
+  const [edit, setEdit] = useState(false);
 
   const handleToggle = (value: number) => () => {
     const currentIndex = checked.indexOf(value);
@@ -30,22 +34,44 @@ export default function TodoItem({ todos, deleteTodo }: TodoItemProps) {
     setChecked(newChecked);
   };
 
+  const handleEdit = () => {
+    setEdit(true);
+  };
+
   return (
-    <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
+    <List sx={{ width: "100%", bgcolor: "background.paper" }}>
       {todos.map(todo => {
         const labelId = `checkbox-list-label-${todo}`;
-
         return (
           <ListItem
             key={todo.id}
             secondaryAction={
-              <IconButton
-                edge="end"
-                aria-label="comments"
-                onClick={() => deleteTodo.mutate(todo.id)}
-              >
-                <Delete />
-              </IconButton>
+              <>
+                {edit ? (
+                  <IconButton
+                    edge="end"
+                    aria-label="comments"
+                    onClick={() => setEdit(false)}
+                  >
+                    <SendIcon />
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    edge="end"
+                    aria-label="comments"
+                    onClick={() => handleEdit()}
+                  >
+                    <Edit />
+                  </IconButton>
+                )}
+                <IconButton
+                  edge="end"
+                  aria-label="comments"
+                  onClick={() => deleteTodo.mutate(todo.id)}
+                >
+                  <Delete />
+                </IconButton>
+              </>
             }
             disablePadding
           >
@@ -54,19 +80,75 @@ export default function TodoItem({ todos, deleteTodo }: TodoItemProps) {
               onClick={handleToggle(todo.id)}
               dense
             >
-              <ListItemIcon>
-                <Checkbox
-                  edge="start"
-                  checked={checked.indexOf(todo.id) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                  inputProps={{ "aria-labelledby": labelId }}
-                />
-              </ListItemIcon>
-              <ListItemText id={labelId} primary={todo.title} />
-              <ListItemText id={labelId} primary={todo.status} />
-              <ListItemText id={labelId} primary={todo.createdAt} />
-              <ListItemText id={labelId} primary={todo.updatedAt} />
+              <Grid container>
+                <Grid xs={0.5}>
+                  <ListItemIcon>
+                    <Checkbox
+                      edge="start"
+                      checked={checked.indexOf(todo.id) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      inputProps={{ "aria-labelledby": labelId }}
+                    />
+                  </ListItemIcon>
+                </Grid>
+                <Grid
+                  xs={3}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingX: 1,
+                  }}
+                >
+                  {edit ? (
+                    <CustomTextField />
+                  ) : (
+                    <ListItemText id={labelId} primary={todo.title} />
+                  )}
+                </Grid>
+                <Grid
+                  xs={2}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingX: 1,
+                  }}
+                >
+                  {edit ? (
+                    <CustomTextField />
+                  ) : (
+                    <ListItemText id={labelId} primary={todo.status} />
+                  )}
+                </Grid>
+                <Grid
+                  xs={3}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingX: 1,
+                  }}
+                >
+                  {edit ? (
+                    <CustomTextField />
+                  ) : (
+                    <ListItemText id={labelId} primary={todo.createdAt} />
+                  )}
+                </Grid>
+                <Grid
+                  xs={3}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    paddingX: 1,
+                  }}
+                >
+                  {edit ? (
+                    <CustomTextField />
+                  ) : (
+                    <ListItemText id={labelId} primary={todo.updatedAt} />
+                  )}
+                </Grid>
+              </Grid>
             </ListItemButton>
           </ListItem>
         );

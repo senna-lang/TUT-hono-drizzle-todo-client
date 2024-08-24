@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const fetcher = async () => {
   const res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos`);
