@@ -1,17 +1,18 @@
-import { RequiredCircle } from "@/features/Todo/components/Input/CustomTextField/RequiredCircle";
+import { RequiredCircle } from "@/components/RequiredCircle";
 import Box from "@mui/material/Box";
 import FormControl from "@mui/material/FormControl";
 import Typography from "@mui/material/Typography";
 import { PropsWithChildren } from "react";
 
 type FieldWrapperProps = PropsWithChildren<{
-  label: string;
+  label?: string;
   required?: boolean;
   errorMessage?: string;
 }>;
 
 export type FieldWrapperPassThroughProps = Omit<FieldWrapperProps, "children">;
 
+// インプットコンポーネント周辺UIの共通化ラッパー
 export const FieldWrapper: React.FC<FieldWrapperProps> = ({
   label,
   required,

@@ -11,6 +11,7 @@ import {
   FieldWrapperPassThroughProps,
 } from "@/components/FieldWrapper";
 
+// MUIのTextFieldをカスタマイズするためのstyled-components
 const MuiCustomTextField = styled(TextField)(({ theme }) => ({
   "& .MuiInputBase-root": {
     borderRadius: 8,
@@ -36,6 +37,7 @@ const MuiCustomTextField = styled(TextField)(({ theme }) => ({
   },
 }));
 
+// MuiCustomTextFieldPropsの型定義
 type MuiCustomTextFieldProps = {
   required?: boolean;
   label?: React.ReactNode;
@@ -43,8 +45,10 @@ type MuiCustomTextFieldProps = {
   textFieldProps?: TextFieldProps;
 };
 
+// CustomTextFieldPropsの型定義
 export type CustomTextFieldProps = {
   muiTextField: MuiCustomTextFieldProps;
+  // FieldWrapperへのパススルーするprops
   fieldWrapper: FieldWrapperPassThroughProps;
 };
 

@@ -2,19 +2,45 @@ import axios from "axios";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const fetcher = async () => {
-  const res = await axios.get(`${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos`);
+  const res = await axios.get(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos`
+  );
   return res.data;
 };
 
 const postFetcher = async (newTodo: string) => {
-  const res = await axios.post(`${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos`, {
-    title: newTodo,
-  });
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos`,
+    {
+      title: newTodo,
+    }
+  );
+  return res.data;
+};
+
+const updateFetcher = async ({
+  id,
+  title,
+  status,
+}: {
+  id: number;
+  title: string;
+  status: string;
+}) => {
+  const res = await axios.put(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos/${id}`,
+    {
+      title,
+      status,
+    }
+  );
   return res.data;
 };
 
 const deleteFetcher = async (id: number) => {
-  const res = await axios.delete(`${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos/${id}`);
+  const res = await axios.delete(
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT_URL}/todos/${id}`
+  );
   return res.data;
 };
 
@@ -44,6 +70,26 @@ export default function useTodos() {
     },
   });
 
+  const updateTodo = useMutation({
+    mutationFn: async ({
+      id,
+      title,
+      status,
+    }: {
+      id: number;
+      title: string;
+      status: string;
+    }) => {
+      const data = await updateFetcher({ id, title, status });
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["todos"],
+      });
+    },
+  });
+
   const deleteTodo = useMutation({
     mutationFn: async (id: number) => {
       const data = await deleteFetcher(id);
@@ -56,5 +102,5 @@ export default function useTodos() {
     },
   });
 
-  return { todoList, error, isLoading, createTodo, deleteTodo };
+  return { todoList, error, isLoading, createTodo, updateTodo, deleteTodo };
 }

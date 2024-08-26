@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { RequiredCircle } from "./RequiredCircle";
+import { RequiredCircle } from "../../../../../components/RequiredCircle";
 
 export type FieldLabelProps = {
   required?: boolean;

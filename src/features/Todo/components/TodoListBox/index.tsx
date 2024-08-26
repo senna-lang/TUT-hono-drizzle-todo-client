@@ -8,7 +8,7 @@ import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import useTodos from "../../hooks/useTodos";
-import { TextFieldController } from "../Input/CustomTextField";
+import { TextFieldController } from "../Input/ControllerCustomTextField";
 import { useCreateTodoForm } from "../../hooks/useCreateTodoForm";
 
 interface TodoAreaPaperProps {
@@ -17,7 +17,7 @@ interface TodoAreaPaperProps {
 }
 
 const TodoListBox = ({ headingText, todos }: TodoAreaPaperProps) => {
-  const { createTodo, deleteTodo } = useTodos();
+  const { createTodo } = useTodos();
   const { methods, onSubmit } = useCreateTodoForm(createTodo);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const TodoListBox = ({ headingText, todos }: TodoAreaPaperProps) => {
             flexGrow: 1,
           }}
         >
-          <TodoItem todos={todos} deleteTodo={deleteTodo} />
+          <TodoItem todos={todos} />
         </Box>
         <Stack
           sx={{
